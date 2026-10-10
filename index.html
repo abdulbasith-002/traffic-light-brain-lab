@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Interactive beginner-friendly guide to a Verilog and VLSI traffic signal controller project.">
+<title>Traffic Light Brain Lab | AI Traffic Controller with VLSI</title>
+<style>
+:root{--bg:#07111f;--panel:#101e32;--panel2:#142742;--ink:#eef6ff;--muted:#a8bad2;--blue:#65b7ff;--cyan:#5de4df;--red:#ff5e6c;--yellow:#ffd166;--green:#4ee59a;--line:#2a4261;--shadow:0 18px 55px #0005}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;font:16px/1.65 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--ink);background:radial-gradient(ellipse at 10% 0%,#163a61 0,transparent 38%),radial-gradient(ellipse at 100% 25%,#14364c 0,transparent 32%),var(--bg)}
+a{color:var(--cyan)}button,input{font:inherit}.wrap{width:min(1160px,92%);margin:auto}
+header{min-height:650px;overflow:hidden;position:relative;border-bottom:1px solid var(--line)}.topbar{position:sticky;top:0;z-index:20;background:#07111fe8;backdrop-filter:blur(16px);border-bottom:1px solid #2a426177}.nav{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:14px 0;flex-wrap:wrap}.brand{font-weight:900;letter-spacing:.2px}.brand span{color:var(--cyan)}.links{display:flex;gap:16px;flex-wrap:wrap}.links a{text-decoration:none;color:var(--muted);font-size:.9rem}.links a:hover{color:white}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:70px 0 80px}.tag{display:inline-flex;gap:8px;align-items:center;color:var(--cyan);border:1px solid #5de4df55;background:#5de4df10;padding:6px 12px;border-radius:99px;font-size:.82rem;font-weight:800}.pulse{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 0 0 #4ee59a99;animation:pulse 1.8s infinite}.hero h1{font-size:clamp(2.5rem,5.7vw,5rem);line-height:1.02;letter-spacing:-2px;margin:20px 0}.gradient{background:linear-gradient(90deg,var(--cyan),var(--blue),#c3a4ff);color:transparent;background-clip:text}.hero p{font-size:1.12rem;color:var(--muted);max-width:590px}.buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}.btn{padding:11px 16px;border-radius:12px;border:1px solid var(--line);background:#142742;color:var(--ink);font-weight:800;cursor:pointer;text-decoration:none;transition:transform .2s,border-color .2s,background .2s}.btn:hover{transform:translateY(-2px);border-color:var(--cyan)}.btn.primary{background:linear-gradient(120deg,#5de4df,#65b7ff);border:0;color:#061421}.btn.small{padding:7px 11px;font-size:.88rem}.hero-visual{min-height:420px;position:relative;display:grid;place-items:center}.orbit{position:absolute;width:min(100%,430px);aspect-ratio:1;border:1px dashed #5de4df55;border-radius:50%;animation:spin 35s linear infinite}.orbit:before,.orbit:after{content:"";position:absolute;width:12px;height:12px;border-radius:50%;background:var(--cyan);box-shadow:0 0 20px var(--cyan)}.orbit:before{top:15%;left:18%}.orbit:after{right:7%;bottom:30%;background:var(--blue);box-shadow:0 0 20px var(--blue)}.signal{position:relative;z-index:2;background:linear-gradient(145deg,#26384c,#101923);border:2px solid #52667c;border-radius:30px;padding:17px;display:flex;flex-direction:column;gap:13px;box-shadow:0 25px 80px #0008}.lamp{width:76px;height:76px;border-radius:50%;background:#293646;border:4px solid #0b1420;opacity:.28;transition:all .35s}.lamp.on{opacity:1;animation:glow 1.8s ease-in-out infinite alternate}.lamp.red.on{background:var(--red);box-shadow:0 0 28px #ff5e6c99}.lamp.yellow.on{background:var(--yellow);box-shadow:0 0 28px #ffd16699}.lamp.green.on{background:var(--green);box-shadow:0 0 28px #4ee59a99}.road{position:absolute;width:100%;height:100px;bottom:20px;background:#202d3d;border-top:2px solid #3d5068;border-bottom:2px solid #3d5068;overflow:hidden;transform:perspective(300px) rotateX(7deg)}.road:after{content:"";position:absolute;left:0;right:0;top:48%;border-top:4px dashed #e6edf766}.car{position:absolute;top:21px;left:-80px;font-size:2.5rem;animation:drive 7s linear infinite}.car:nth-child(2){animation-delay:2.2s;top:30px}.float-label{position:absolute;background:#10243a;border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-size:.83rem;color:var(--muted);box-shadow:var(--shadow);animation:float 4s ease-in-out infinite}.float-label strong{color:var(--cyan);display:block}.label-one{top:25px;left:0}.label-two{right:0;bottom:115px;animation-delay:1.2s}
+@keyframes pulse{70%{box-shadow:0 0 0 9px #4ee59a00}100%{box-shadow:0 0 0 0 #4ee59a00}}@keyframes glow{from{filter:brightness(.9)}to{filter:brightness(1.25)}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes drive{from{left:-90px}to{left:110%}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+main{padding:30px 0 80px}.section{padding:45px 0;border-bottom:1px solid #2a426155}.section-head{max-width:800px;margin-bottom:24px}.eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--cyan);font-weight:900}.section h2{font-size:clamp(1.8rem,3.5vw,3rem);line-height:1.12;margin:8px 0 12px;letter-spacing:-.8px}.lead{color:var(--muted);font-size:1.05rem}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:linear-gradient(145deg,#132640,#0d1b2d);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--shadow);transition:transform .25s,border-color .25s}.card:hover{transform:translateY(-5px);border-color:#5de4df88}.emoji{font-size:2rem}.card h3{margin:8px 0;color:#fff}.card p{color:var(--muted);margin:0}.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.step{padding:17px;background:#102039;border:1px solid var(--line);border-radius:16px}.number{width:34px;height:34px;display:grid;place-items:center;background:#5de4df18;color:var(--cyan);border-radius:11px;font-weight:900}.step h3{font-size:1rem;margin:12px 0 6px}.step p{font-size:.9rem;color:var(--muted);margin:0}
+.diagram{background:#0b192b;border:1px solid var(--line);padding:24px;border-radius:22px;overflow:hidden}.flow{display:flex;align-items:stretch;justify-content:center;gap:12px;flex-wrap:wrap}.node{min-width:145px;flex:1;text-align:center;background:#142944;border:1px solid #3c6388;border-radius:14px;padding:16px}.node .emoji{font-size:1.8rem}.node strong{display:block}.arrow{align-self:center;color:var(--cyan);font-size:1.6rem;animation:nudge 1s ease-in-out infinite alternate}@keyframes nudge{to{transform:translateX(5px)}}
+.demo-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:18px}.panel{background:#102039;border:1px solid var(--line);border-radius:20px;padding:22px}.field-label{font-weight:800;display:block;margin-bottom:7px}.range{width:100%;accent-color:var(--cyan)}.metric{font-size:2.2rem;font-weight:900;color:var(--cyan)}.density{display:inline-block;padding:5px 10px;border-radius:99px;font-size:.83rem;font-weight:900}.density.low{color:var(--green);background:#4ee59a17}.density.medium{color:var(--yellow);background:#ffd16617}.density.high{color:var(--red);background:#ff5e6c17}.readout{background:#091727;border:1px solid var(--line);border-radius:14px;padding:15px;margin-top:15px;color:var(--muted)}.readout strong{color:white}.live-scene{min-height:270px;position:relative;background:linear-gradient(#142b46 0 55%,#263649 55%);border-radius:16px;overflow:hidden;display:grid;place-items:center}.live-scene:before{content:"";position:absolute;top:72%;left:0;right:0;border-top:4px dashed #ffffff77}.mini-signal{position:absolute;right:28px;top:18px;display:flex;flex-direction:column;gap:7px;background:#111c2a;border-radius:15px;padding:9px}.mini-lamp{width:35px;height:35px;border-radius:50%;background:#394453;opacity:.3}.mini-lamp.on.red{background:var(--red);opacity:1;box-shadow:0 0 18px var(--red)}.mini-lamp.on.yellow{background:var(--yellow);opacity:1;box-shadow:0 0 18px var(--yellow)}.mini-lamp.on.green{background:var(--green);opacity:1;box-shadow:0 0 18px var(--green)}.demo-car{position:absolute;left:8%;top:57%;font-size:2.7rem;transition:left 1s ease}.demo-car.moving{left:72%}.pedestrian{position:absolute;left:20px;top:22px;font-size:2rem;opacity:.35;transition:opacity .3s}.pedestrian.waiting{opacity:1;animation:float 1.3s infinite}.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.legend span{font-size:.8rem;color:var(--muted)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tab.active{background:var(--cyan);color:#061421;border-color:var(--cyan)}.codebox{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#07111f}.codebar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#12233a;padding:12px 16px;border-bottom:1px solid var(--line)}.codebar span{font-weight:850;color:#dcecff}.codebox pre{margin:0;padding:20px;overflow:auto;max-height:520px;color:#c8e4ff;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:4}.code-note{padding:14px 18px;color:var(--muted);border-top:1px solid var(--line);font-size:.9rem}.copy-status{color:var(--green);font-size:.85rem}
+.modules{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.module{background:#102039;border:1px solid var(--line);border-radius:17px;padding:19px}.module h3{margin:0 0 7px}.module p{margin:0;color:var(--muted)}code.inline{color:var(--cyan);background:#5de4df12;padding:2px 6px;border-radius:5px}
+table{width:100%;border-collapse:collapse;background:#102039;border:1px solid var(--line);border-radius:15px;overflow:hidden}th,td{padding:13px 15px;text-align:left;border-bottom:1px solid var(--line)}th{background:#193554;color:#fff}td{color:var(--muted)}tr:last-child td{border-bottom:0}.callout{border:1px solid #ffd16666;background:#ffd1660c;padding:18px 20px;border-radius:16px;color:var(--muted)}.callout strong{color:var(--yellow)}
+.quiz{background:linear-gradient(135deg,#112a45,#13223b);border:1px solid #3d6388;border-radius:20px;padding:23px}.quiz-options{display:flex;gap:9px;flex-wrap:wrap;margin:15px 0}.result{min-height:28px;font-weight:850}
+footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted)}footer strong{color:var(--ink)}.smallprint{font-size:.86rem}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s}.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:850px){.hero{grid-template-columns:1fr;padding:48px 0}.hero-visual{min-height:360px}.grid{grid-template-columns:1fr 1fr}.steps{grid-template-columns:repeat(2,1fr)}.demo-grid{grid-template-columns:1fr}.flow .arrow{transform:rotate(90deg)}.modules{grid-template-columns:1fr}}
+@media(max-width:540px){.grid,.steps{grid-template-columns:1fr}.hero h1{letter-spacing:-1px}.links{gap:10px}.links a{font-size:.82rem}.hero-visual{min-height:310px}.lamp{width:61px;height:61px}.float-label{font-size:.74rem}.section{padding:32px 0}.codebox pre{font-size:12px;padding:14px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;scroll-behavior:auto!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap nav"><div class="brand">🚦 <span>TRAFFIC</span> LIGHT BRAIN LAB</div><div class="links"><a href="#learn">Learn</a><a href="#architecture">Architecture</a><a href="#simulator">Simulator</a><a href="#source">Verilog code</a><a href="#quiz">Quiz</a></div></div></div>
+<header><div class="wrap hero">
+<div><span class="tag"><span class="pulse"></span> VLSI • VERILOG • BEGINNER GUIDE</span><h1>A traffic light with a <span class="gradient">digital brain.</span></h1><p>Imagine a tiny computer that helps a traffic light decide how long cars should wait. This website explains the idea in simple words, lets you play with traffic levels, and shows example Verilog code.</p><div class="buttons"><a class="btn primary" href="#learn">Start the tour ↓</a><a class="btn" href="#source">Explore the code</a></div></div>
+<div class="hero-visual"><div class="orbit"></div><div class="road"><div class="car">🚙</div><div class="car">🚗</div></div><div class="signal"><div class="lamp red on" id="heroRed"></div><div class="lamp yellow" id="heroYellow"></div><div class="lamp green" id="heroGreen"></div></div><div class="float-label label-one"><strong>INPUT</strong>Vehicle count</div><div class="float-label label-two"><strong>OUTPUT</strong>Traffic lights</div></div>
+</div></header>
+<main class="wrap">
+<section class="section reveal" id="learn"><div class="section-head"><div class="eyebrow">01 / The big idea</div><h2>Think of it like a very careful crossing guard</h2><p class="lead">A traffic controller receives information, follows rules, and changes the lights in a safe order. In this project, digital hardware logic acts like the crossing guard's brain.</p></div><div class="grid">
+<article class="card"><div class="emoji">🚗 🚕 🚙</div><h3>1. Notice the traffic</h3><p>A sensor or AI camera could estimate how many vehicles are waiting. More vehicles can mean a longer green-light time.</p></article>
+<article class="card"><div class="emoji">🧠</div><h3>2. Make a decision</h3><p>The controller groups traffic into low, medium, or high density. The example code below uses simple thresholds to demonstrate this.</p></article>
+<article class="card"><div class="emoji">🚦</div><h3>3. Follow the sequence</h3><p>A finite-state machine (FSM) changes between traffic phases in a planned order instead of switching randomly.</p></article></div></section>
+<section class="section reveal"><div class="section-head"><div class="eyebrow">02 / Five simple steps</div><h2>From cars to lights</h2><p class="lead">The whole system can be understood as five small jobs.</p></div><div class="steps">
+<div class="step"><div class="number">1</div><h3>Read the input</h3><p>Get a vehicle count from a sensor, simulator, or upstream AI system.</p></div>
+<div class="step"><div class="number">2</div><h3>Classify density</h3><p>Decide whether traffic is low, medium, or high.</p></div>
+<div class="step"><div class="number">3</div><h3>Pick a duration</h3><p>Choose how many clock cycles the green phase should last.</p></div>
+<div class="step"><div class="number">4</div><h3>Count the time</h3><p>A timer counts clock edges until the phase ends.</p></div>
+<div class="step"><div class="number">5</div><h3>Change the lights</h3><p>The FSM switches to yellow and then red in its programmed order.</p></div></div></section>
+<section class="section reveal" id="architecture"><div class="section-head"><div class="eyebrow">03 / System architecture</div><h2>How the blocks connect</h2><p class="lead">Each block has one job. Keeping jobs separate makes the design easier to test and explain.</p></div><div class="diagram"><div class="flow">
+<div class="node"><div class="emoji">📷</div><strong>Vehicle input</strong><span class="smallprint">Sensor / AI count</span></div><div class="arrow">➜</div>
+<div class="node"><div class="emoji">📊</div><strong>Density logic</strong><span class="smallprint">Low / medium / high</span></div><div class="arrow">➜</div>
+<div class="node"><div class="emoji">⏱️</div><strong>Timer + FSM</strong><span class="smallprint">Sequence + duration</span></div><div class="arrow">➜</div>
+<div class="node"><div class="emoji">🚦</div><strong>Light outputs</strong><span class="smallprint">Red / yellow / green</span></div>
+</div><p class="smallprint" style="color:var(--muted);margin:18px 0 0">The camera/AI block is a proposed input stage. The Verilog example is digital control logic; it does not perform camera vision by itself.</p></div></section>
+<section class="section reveal" id="simulator"><div class="section-head"><div class="eyebrow">04 / Interactive playground</div><h2>What if more cars arrive?</h2><p class="lead">Move the slider and watch the example controller respond. This is a teaching simulation, not a live road system.</p></div><div class="demo-grid"><div class="panel"><label class="field-label" for="cars">Vehicles waiting: <span id="carCount">8</span></label><input class="range" id="cars" type="range" min="0" max="60" value="8"><div style="margin-top:12px"><span class="density low">LOW 0–9</span> <span class="density medium">MEDIUM 10–29</span> <span class="density high">HIGH 30+</span></div><label style="display:flex;gap:10px;align-items:center;margin-top:20px;font-weight:750"><input type="checkbox" id="pedRequest"> Pedestrian wants to cross</label><div class="readout" aria-live="polite"><div>Traffic level: <span id="densityName" class="density low">LOW</span></div><div class="metric" id="greenTime">5 cycles</div><div>Example green phase duration</div><p id="pedStatus">No crossing request is waiting.</p></div><div class="buttons"><button class="btn primary" id="runDemo">▶ Run animation</button><button class="btn" id="resetDemo">↺ Reset</button></div></div><div class="panel"><div class="live-scene"><div class="pedestrian" id="pedIcon">🚶</div><div class="demo-car" id="demoCar">🚗</div><div class="mini-signal"><div class="mini-lamp red on" id="demoRed"></div><div class="mini-lamp yellow" id="demoYellow"></div><div class="mini-lamp green" id="demoGreen"></div></div></div><div class="legend"><span>● Red = stop</span><span>● Yellow = prepare</span><span>● Green = go</span><span id="phaseLabel">Current phase: RED</span></div></div></div></section>
+<section class="section reveal" id="source"><div class="section-head"><div class="eyebrow">05 / Learn from code</div><h2>Example Verilog source code</h2><p class="lead">Choose a code tab to see how the main ideas can be written in Verilog. These are educational reference modules. Compare them with your actual project files before claiming they are identical.</p></div>
+<div class="tabs"><button class="btn tab active" data-code="density">Density logic</button><button class="btn tab" data-code="timer">Timer</button><button class="btn tab" data-code="fsm">Traffic FSM</button><button class="btn tab" data-code="top">Top module</button><button class="btn tab" data-code="tb">Testbench</button></div>
+<div class="codebox"><div class="codebar"><span id="codeTitle">density_logic.v — traffic classification</span><button class="btn small" id="copyCode">Copy code</button></div><pre><code id="codeContent"></code></pre><div class="code-note" id="codeNote">This module converts a vehicle count into a density category.</div></div>
+</section>
+<section class="section reveal"><div class="section-head"><div class="eyebrow">06 / Code explained</div><h2>Meet the project modules</h2></div><div class="modules">
+<article class="module"><h3>📊 <code class="inline">density_logic.v</code></h3><p>Looks at the vehicle count and labels it low, medium, or high. The thresholds are example values and should match your final source code.</p></article>
+<article class="module"><h3>⏱️ <code class="inline">traffic_timer.v</code></h3><p>Counts clock cycles. A clock is like a steady tick-tock that helps digital hardware keep time.</p></article>
+<article class="module"><h3>🧭 <code class="inline">traffic_fsm_final.v</code></h3><p>The FSM remembers the current traffic phase and decides the next phase when the timer finishes.</p></article>
+<article class="module"><h3>🔌 <code class="inline">traffic_system_top_final.v</code></h3><p>Connects the smaller modules together and exposes inputs and outputs at the top level.</p></article>
+<article class="module"><h3>🧪 <code class="inline">traffic_system_tb_final.v</code></h3><p>A testbench provides pretend inputs, advances the clock, and lets you inspect the outputs in simulation.</p></article>
+<article class="module"><h3>📈 Waveform</h3><p>A waveform is a timeline of signals. It helps you see if red, yellow, green, and timer signals change when expected.</p></article></div></section>
+<section class="section reveal"><div class="section-head"><div class="eyebrow">07 / Timing table</div><h2>Example simulation timings</h2><p class="lead">The values below are examples for learning. A clock cycle is not necessarily one second; real duration depends on the clock frequency and divider logic.</p></div><table><thead><tr><th>Condition / phase</th><th>Example cycles</th><th>In simple words</th></tr></thead><tbody><tr><td>Green — low density</td><td>5</td><td>Short green for fewer vehicles</td></tr><tr><td>Green — medium density</td><td>10</td><td>Medium green time</td></tr><tr><td>Green — high density</td><td>20</td><td>Longer green for a busy road</td></tr><tr><td>Yellow phase</td><td>3</td><td>Warn drivers to prepare to stop</td></tr><tr><td>Red phase</td><td>8</td><td>Vehicles must wait</td></tr><tr><td>Pedestrian phase</td><td>6</td><td>Reserved crossing time if implemented</td></tr></tbody></table></section>
+<section class="section reveal"><div class="callout"><strong>Engineering honesty & safety:</strong> The example RTL uses threshold-based, rule-based logic. It is not a trained AI model, and it does not detect vehicles through a camera. A complete AI-based version needs an AI/sensor stage that produces vehicle-count data. This demo is for education only and must never be connected directly to real traffic signals.</div></section>
+<section class="section reveal" id="quiz"><div class="section-head"><div class="eyebrow">08 / Mini quiz</div><h2>Check your understanding</h2><p class="lead">Answer this little question to test what you learned.</p></div><div class="quiz"><h3>If 35 vehicles are waiting, which density group is selected by the example rule?</h3><div class="quiz-options"><button class="btn" onclick="answerQuiz('low')">Low</button><button class="btn" onclick="answerQuiz('medium')">Medium</button><button class="btn" onclick="answerQuiz('high')">High</button></div><div class="result" id="quizResult" aria-live="polite"></div></div></section>
+</main>
+<footer><div class="wrap"><strong>🚦 Traffic Light Brain Lab</strong><p>Learn to Build an AI-Based Traffic Signal Controller using VLSI</p><p class="smallprint">Beginner-friendly educational website • Not certified for real-world traffic control.</p></div></footer>
+<script>
+const codes={
+density:{title:'density_logic.v — traffic classification',note:'Combinational logic: the output category changes when the vehicle count changes.',code:`module density_logic #(
+    parameter LOW_LIMIT  = 10,
+    parameter HIGH_LIMIT = 30
+)(
+    input  wire [7:0] vehicle_count,
+    output reg  [1:0] density
+);
+    localparam LOW    = 2'b00;
+    localparam MEDIUM = 2'b01;
+    localparam HIGH   = 2'b10;
+
+    always @(*) begin
+        if (vehicle_count < LOW_LIMIT)
+            density = LOW;
+        else if (vehicle_count < HIGH_LIMIT)
+            density = MEDIUM;
+        else
+            density = HIGH;
+    end
+endmodule`},
+timer:{title:'traffic_timer.v — clock-cycle counter',note:'A simple timer counts clock edges until the requested number of cycles has passed. This is a teaching example.',code:`module traffic_timer (
+    input  wire       clk,
+    input  wire       reset,
+    input  wire       enable,
+    input  wire [7:0] duration,
+    output reg        done
+);
+    reg [7:0] count;
+
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            count <= 0;
+            done  <= 0;
+        end else if (!enable) begin
+            count <= 0;
+            done  <= 0;
+        end else if (count >= duration - 1'b1) begin
+            count <= 0;
+            done  <= 1;
+        end else begin
+            count <= count + 1'b1;
+            done  <= 0;
+        end
+    end
+endmodule`},
+fsm:{title:'traffic_fsm.v — red, green, yellow sequence',note:'A finite-state machine (FSM) remembers its current state. This compact example cycles through GREEN → YELLOW → RED.',code:`module traffic_fsm (
+    input  wire clk,
+    input  wire reset,
+    input  wire timer_done,
+    output reg  red,
+    output reg  yellow,
+    output reg  green
+);
+    localparam S_GREEN  = 2'd0,
+               S_YELLOW = 2'd1,
+               S_RED    = 2'd2;
+    reg [1:0] state, next_state;
+
+    always @(posedge clk or posedge reset) begin
+        if (reset)
+            state <= S_RED;
+        else if (timer_done)
+            state <= next_state;
+    end
+
+    always @(*) begin
+        case (state)
+            S_GREEN:  next_state = S_YELLOW;
+            S_YELLOW: next_state = S_RED;
+            default:  next_state = S_GREEN;
+        endcase
+    end
+
+    always @(*) begin
+        red = (state == S_RED);
+        yellow = (state == S_YELLOW);
+        green = (state == S_GREEN);
+    end
+endmodule`},
+top:{title:'traffic_system_top.v — connect the blocks',note:'A top module connects submodules. Port names must match the actual modules in your project before compiling.',code:`module traffic_system_top (
+    input  wire clk,
+    input  wire reset,
+    input  wire timer_done,
+    output wire red,
+    output wire yellow,
+    output wire green
+);
+    traffic_fsm controller (
+        .clk(clk),
+        .reset(reset),
+        .timer_done(timer_done),
+        .red(red),
+        .yellow(yellow),
+        .green(green)
+    );
+endmodule`},
+tb:{title:'traffic_system_tb.v — basic simulation test',note:'A testbench is simulation-only. It creates a clock, applies reset, and lets you observe the traffic-light outputs.',code:`\`timescale 1ns/1ps
+
+module traffic_system_tb;
+    reg clk = 0;
+    reg reset = 1;
+    reg timer_done = 0;
+    wire red, yellow, green;
+
+    always #5 clk = ~clk;
+
+    traffic_system_top dut (
+        .clk(clk),
+        .reset(reset),
+        .timer_done(timer_done),
+        .red(red),
+        .yellow(yellow),
+        .green(green)
+    );
+
+    initial begin
+        #20 reset = 0;
+        #40 timer_done = 1;
+        #10 timer_done = 0;
+        #40 timer_done = 1;
+        #10 timer_done = 0;
+        #40 $finish;
+    end
+endmodule`}
+};
+let selected='density';
+const codeContent=document.getElementById('codeContent');
+function showCode(key){selected=key;document.getElementById('codeTitle').textContent=codes[key].title;document.getElementById('codeNote').textContent=codes[key].note;codeContent.textContent=codes[key].code;document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.code===key));document.getElementById('copyCode').textContent='Copy code';}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showCode(b.dataset.code)));
+document.getElementById('copyCode').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(codes[selected].code);document.getElementById('copyCode').textContent='Copied ✓'}catch(e){const r=document.createRange();r.selectNodeContents(codeContent);const s=window.getSelection();s.removeAllRanges();s.addRange(r);document.getElementById('copyCode').textContent='Select and copy'}});
+function lamps(active){['red','yellow','green'].forEach(c=>{document.getElementById('demo'+c[0].toUpperCase()+c.slice(1)).classList.toggle('on',c===active)});}
+function updateDemo(){const n=+document.getElementById('cars').value;let name,duration,color,cls;if(n<10){name='LOW';duration=5;color='red';cls='low'}else if(n<30){name='MEDIUM';duration=10;color='yellow';cls='medium'}else{name='HIGH';duration=20;color='green';cls='high'}document.getElementById('carCount').textContent=n;const d=document.getElementById('densityName');d.textContent=name;d.className='density '+cls;document.getElementById('greenTime').textContent=duration+' cycles';document.getElementById('pedStatus').textContent=document.getElementById('pedRequest').checked?'Crossing request is waiting for a safe phase.':'No crossing request is waiting.';document.getElementById('pedIcon').classList.toggle('waiting',document.getElementById('pedRequest').checked);lamps(color);}
+document.getElementById('cars').addEventListener('input',updateDemo);document.getElementById('pedRequest').addEventListener('change',updateDemo);
+document.getElementById('runDemo').addEventListener('click',()=>{const car=document.getElementById('demoCar');car.classList.remove('moving');void car.offsetWidth;car.classList.add('moving');document.getElementById('phaseLabel').textContent='Current phase: GREEN → YELLOW → RED (illustration)';});
+document.getElementById('resetDemo').addEventListener('click',()=>{document.getElementById('cars').value=8;document.getElementById('pedRequest').checked=false;document.getElementById('demoCar').classList.remove('moving');document.getElementById('phaseLabel').textContent='Current phase: RED';updateDemo();});
+function answerQuiz(a){const r=document.getElementById('quizResult');if(a==='high'){r.textContent='Correct! 35 is at least 30, so it belongs to the HIGH group. 🎉';r.style.color='var(--green)'}else{r.textContent='Try again! LOW is under 10, MEDIUM is 10–29, and HIGH is 30 or more.';r.style.color='var(--yellow)'}}
+showCode('density');updateDemo();
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+</body></html>
